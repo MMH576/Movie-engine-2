@@ -1,12 +1,24 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
+import swordfightImage from "./assets/swordfight.jpg";
+
+const Card = ({ image, title, description }) => {
+  return (
+    <div className="card">
+      <div className="card-img">{image}</div>
+      <h2>{title}</h2>
+      <p>{description}</p>
+    </div>
+  );
+};
 
 const App = () => {
   return (
     <div>
-      <h2>Hello</h2>
+      <Card
+        title="One piece"
+        image={<img src={swordfightImage} />}
+        description="A story about pirates in search of the ultimate treasure."
+      />
     </div>
   );
 };
