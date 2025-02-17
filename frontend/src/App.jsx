@@ -1,16 +1,28 @@
 import "./App.css";
 import swordfightImage from "./assets/swordfight.jpg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Card = ({ image, title, description }) => {
   const [hasLiked, sethasLiked] = useState(false);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    console.log(`The card ${title} has been liked: ${hasLiked}`);
+  }, [hasLiked]);
 
   return (
-    <div className="card">
+    <div
+      className="card"
+      onClick={() => setCount((prevState) => prevState + 1)}
+    >
       <div className="card-img">{image}</div>
-      <h2>{title}</h2>
+      <h2>
+        {title} --- {count}
+      </h2>
       <p>{description}</p>
-      <button onClick={() => sethasLiked(true)}>like</button>
+      <button onClick={() => sethasLiked(!hasLiked)}>
+        {hasLiked ? "Liked" : "Like"}
+      </button>
     </div>
   );
 };
