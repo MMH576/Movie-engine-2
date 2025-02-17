@@ -21,13 +21,21 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
 
-  debounce(
-    () => {
+  useEffect(() => {
+    const handler = debounce(() => {
       setDebouncedSearchTerm(searchTerm);
-    },
-    500,
-    [searchTerm]
-  );
+    }, 500);
+
+    handler();
+
+    return () => {
+      handler.cancel();
+    };
+  }, [searchTerm]);
+
+  useEffect(() => {
+    fetchMovies(debouncedSearchTerm);
+  }, [debouncedSearchTerm]);
 
   const fetchMovies = async (query = "") => {
     setIsLoading(true);
@@ -59,10 +67,6 @@ const App = () => {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchMovies(debouncedSearchTerm);
-  }, [debouncedSearchTerm]);
 
   return (
     <main>
