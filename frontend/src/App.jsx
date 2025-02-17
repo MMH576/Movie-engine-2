@@ -1,11 +1,11 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Search from "./components/search";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
-const API_KEY = import.meta.env.Vite_TMDB_API_KEY;
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const API_OPTIONS = {
   method: "GET",
-  Headers: {
+  headers: {
     accept: "application/json",
     Authorization: `Bearer ${API_KEY}`,
   },
@@ -18,11 +18,11 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const fetchMovies = async () => {
-    isLoading(true);
+    setIsLoading(true);
     setErrorMessage("");
 
     try {
-      const endpoint = `${API_BASE_URL}/discover/movie?sort-by=popularity.dec`;
+      const endpoint = `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
       const response = await fetch(endpoint, API_OPTIONS);
 
       if (!response.ok) {
@@ -64,7 +64,22 @@ const App = () => {
           <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         </header>
         <section className="all-movies">
-          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+          <h2>all movies</h2>
+          {isLoading ? (
+            <p className="text-white">Loading...</p>
+          ) : errorMessage ? (
+            <p className="text-red-500">{errorMessage}</p>
+          ) : (
+            <ul>
+              {movieList.map((movie) => {
+                return (
+                  <p key={movie.id} className="text-white">
+                    {movie.title}
+                  </p>
+                );
+              })}
+            </ul>
+          )}
         </section>
       </div>
     </main>
