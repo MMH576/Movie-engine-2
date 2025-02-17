@@ -1,4 +1,4 @@
-import React, { use, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import Search from "./components/search";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
@@ -13,13 +13,16 @@ const API_OPTIONS = {
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState("");
-
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [movieList, setMovieList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const fetchMovies = async () => {
+    isLoading(true);
+    setErrorMessage("");
+
     try {
       const endpoint = `${API_BASE_URL}/discover/movie?sort-by=popularity.dec`;
-
       const response = await fetch(endpoint, API_OPTIONS);
 
       if (!response.ok) {
@@ -30,12 +33,22 @@ const App = () => {
 
       if (data.response === "False") {
         setErrorMessage(data.error || "Error fetching movies");
+        setMovieList([]);
+        return;
       }
+
+      setMovieList(data.results || []);
     } catch (error) {
       console.error(`Error fetching movies: ${error}`);
       setErrorMessage("Error fetching movies. please try again later.");
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchMovies();
+  }, []);
 
   return (
     <main>
