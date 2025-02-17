@@ -1,51 +1,25 @@
-import "./App.css";
-import swordfightImage from "./assets/swordfight.jpg";
-import { useState, useEffect } from "react";
-
-const Card = ({ image, title, description }) => {
-  const [hasLiked, sethasLiked] = useState(false);
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    console.log(`The card ${title} has been liked: ${hasLiked}`);
-  }, [hasLiked]);
-
-  return (
-    <div
-      className="card"
-      onClick={() => setCount((prevState) => prevState + 1)}
-    >
-      <div className="card-img">{image}</div>
-      <h2>
-        {title} --- {count}
-      </h2>
-      <p>{description}</p>
-      <button onClick={() => sethasLiked(!hasLiked)}>
-        {hasLiked ? "Liked" : "Like"}
-      </button>
-    </div>
-  );
-};
+import React, { useState } from "react";
+import Search from "./components/search";
 
 const App = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+
   return (
-    <div>
-      <Card
-        title="One Piece"
-        image={<img src={swordfightImage} alt="One Piece" />}
-        description="A story about pirates in search of the ultimate treasure."
-      />
-      <Card
-        title="Naruto"
-        image={<img src={swordfightImage} alt="Naruto" />}
-        description="A young ninja striving to become the strongest ninja and leader of his village."
-      />
-      <Card
-        title="Attack on Titan"
-        image={<img src={swordfightImage} alt="Attack on Titan" />}
-        description="Humanity's fight for survival against giant humanoid Titans."
-      />
-    </div>
+    <main>
+      <div className="patter" />
+
+      <div className="wrapper">
+        <header>
+          <img src="./hero.png" alt="Hero" />
+          <h1>
+            Find <span className="text-gradient">Movies</span> You'll Enjoy
+            Without The Hassle
+          </h1>
+        </header>
+
+        <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      </div>
+    </main>
   );
 };
 
